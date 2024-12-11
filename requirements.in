@@ -1,0 +1,4 @@
+fastapi #API framework
+owlready2 #Ontology library
+pydantic #Data validation
+uvicorn #ASGI server
