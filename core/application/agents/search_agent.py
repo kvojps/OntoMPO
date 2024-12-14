@@ -1,12 +1,15 @@
 from typing import Any, Optional, Tuple
+from owlready2 import Ontology  # type: ignore
 from core.infrastructure.ontology.repository.ontology_repository import (
     OntologyRepository,
 )
 
 
 class SearchAgent:
-    def __init__(self, ontology_repository: OntologyRepository):
+    def __init__(self, ontology: Ontology, ontology_repository: OntologyRepository):
+        self.ontology = ontology
         self.ontology_repository = ontology_repository
+        self.object_properties = self._get_ontology_object_properties()
 
     def get_mpo_process_layer_definition(
         self,
@@ -31,3 +34,20 @@ class SearchAgent:
                 self._build_hierarchy(subcls) for subcls in cls.subclasses()
             ],
         }
+
+    def _get_ontology_object_properties(self) -> dict[str, list[dict[str, str]]]:
+        object_properties_by_class: dict[str, list[dict[str, str]]] = {}
+        for cls in self.ontology.classes():
+            object_properties = []
+            for prop in self.ontology.object_properties():
+                if cls in prop.domain:
+                    object_properties.append(
+                        {
+                            "prop_name": prop.name,
+                            "range": [r.name for r in prop.range],
+                        }
+                    )
+            if object_properties:
+                object_properties_by_class[cls.name] = object_properties
+
+        return object_properties_by_class
