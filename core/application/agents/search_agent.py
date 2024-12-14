@@ -30,6 +30,7 @@ class SearchAgent:
     def _build_hierarchy(self, cls) -> dict[str, Any]:
         return {
             "class_name": cls.name,
+            "object_properties": self.object_properties.get(cls.name, []),
             "subclasses": [
                 self._build_hierarchy(subcls) for subcls in cls.subclasses()
             ],
