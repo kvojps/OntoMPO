@@ -1,5 +1,6 @@
 from typing import Any, Optional, Tuple
 from owlready2 import Ontology  # type: ignore
+from core.infrastructure.ontology import mpo_specification
 from core.infrastructure.ontology.repository.ontology_repository import (
     OntologyRepository,
 )
@@ -30,6 +31,12 @@ class SearchAgent:
     def _build_hierarchy(self, cls) -> dict[str, Any]:
         return {
             "class_name": cls.name,
+            "translated_class_name": mpo_specification.process_layer.get(
+                cls.name, {}
+            ).get("translated_name", None),
+            "description": mpo_specification.process_layer.get(cls.name, {}).get(
+                "description", None
+            ),
             "object_properties": self.object_properties.get(cls.name, []),
             "subclasses": [
                 self._build_hierarchy(subcls) for subcls in cls.subclasses()
