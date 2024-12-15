@@ -1,5 +1,6 @@
 from typing import Optional, Tuple
 from owlready2 import Ontology  # type: ignore
+from contracts.enums.mpo import MpoLayer
 from contracts.responses.ontology import ClassResponse, ObjectPropertyResponse
 from core.infrastructure.ontology import mpo_specification
 from core.infrastructure.ontology.repository.ontology_repository import (
@@ -13,11 +14,11 @@ class SearchAgent:
         self.ontology_repository = ontology_repository
         self.object_properties = self._get_ontology_object_properties()
 
-    def get_mpo_process_layer_definition(
-        self,
+    def get_mpo_layer_definition(
+        self, layer: MpoLayer
     ) -> Tuple[Optional[list[ClassResponse]], Optional[str]]:
         mpo_process_main_classes, error = self.ontology_repository.get_subclasses(
-            "Process"
+            layer.value
         )
         if error:
             return None, error
