@@ -1,7 +1,7 @@
 from typing import Optional, Tuple
 from owlready2 import Ontology  # type: ignore
-from contracts.enums.mpo import MpoLayer
-from contracts.responses.ontology import ClassResponse, ObjectPropertyResponse
+from core.domain.mpo import MpoLayer
+from core.domain.ontology import ClassResponse, ObjectPropertyResponse
 from core.infrastructure.ontology import mpo_specification
 from core.infrastructure.ontology.repository.ontology_repository import (
     OntologyRepository,
